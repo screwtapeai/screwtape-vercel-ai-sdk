@@ -1,4 +1,4 @@
-// Create a free Screwtape.ai key (100 calls per UTC day) using the documented proof of work.
+// Create a free Screwtape.ai key (10 calls per UTC day) using the documented proof of work.
 //   npx tsx get-free-key.ts --dry-run   # only find a valid nonce, send nothing
 //   npx tsx get-free-key.ts my-agent    # POST /v1/signup; the key is printed once
 import { createHash, randomBytes } from "node:crypto";

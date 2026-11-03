@@ -1,5 +1,5 @@
 // Small Screwtape.ai client (fetch only). Reads SCREWTAPE_API_KEY from the environment.
-// Without a key, judge and consensus answer HTTP 402 with x402 payment terms; see the README.
+// Without a key, judge and consensus answer HTTP 402; get a free key at https://screwtape.ai/signup/.
 // Fields follow https://screwtape.ai/openapi.json.
 const API = "https://screwtape.ai";
 
@@ -10,7 +10,7 @@ export type Receipt = {
   request_sha256: string;
   verdict: string;
   score: number;
-  payment: { type: "x402" | "free-key" | "prepaid" | "demo"; tx?: string; network?: string; payer?: string; key_prefix?: string };
+  payment: { type: string; key_prefix?: string };
   alg: "Ed25519";
   kid: string;
   signature: string;
@@ -47,7 +47,7 @@ async function post<T>(path: string, body: unknown, auth = true): Promise<T> {
   const res = await fetch(API + path, { method: "POST", headers, body: JSON.stringify(body) });
   if (res.status === 402) {
     throw new Error(
-      "402 Payment Required: set SCREWTAPE_API_KEY (free key, 100 calls per UTC day) or pay $0.005 USDC per call with x402 on Base or Solana. See README.",
+      "402 Payment Required: set SCREWTAPE_API_KEY. Get a free key (10 calls per UTC day) at https://screwtape.ai/signup/ or with get-free-key.ts.",
     );
   }
   if (!res.ok) throw new Error(`Screwtape ${res.status}: ${(await res.text()).slice(0, 300)}`);
